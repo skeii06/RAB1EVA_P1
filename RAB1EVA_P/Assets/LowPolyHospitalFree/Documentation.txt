@@ -1,0 +1,48 @@
+Low Poly Hospital Free
+
+Documentation
+
+Every prop is a prefab in Assets/LowPolyHospitalFree/Prefabs/: drag it into a scene. 1 unit = 1 m; a prop's pivot
+is on the floor (or, for a wall prop, on the wall) it rests against. Each part has a box collider.
+
+Look
+Every prefab uses Materials/, on the shader LowPolyHospitalFree/Stylized Lit: the texture times the occlusion baked into the
+vertex colours (Baked Occlusion), lit by the scene's lights with a soft falloff (Light Wrap), casting and
+taking shadows, with fog; Glow Map's texels light themselves (lamps, screens, signs; Glow Strength).
+Render pipelines: Built-in and URP: every material uses the pack's own lit shader, with a SubShader for each. Not HDRP, where the materials show magenta until given an HDRP Lit shader.
+
+Animations
+A prop with moving parts has an Animation component with its clips. Standalone decorative loops start automatically.
+Clips controlled by use, pickup, gun or melee behavior wait for that control. Play a clip directly with:
+    GetComponent<Animation>().Play("open");
+Demo/Demo.unity circles the props and plays every animation in turn (Scripts/PropsDemo.cs).
+
+Machines
+A prop that works (its kind is in the list below) has Scripts/Machine.cs on its prefab, set up in the
+inspector: its kind (what a use does: Switch, Button, Turn, Slot, Keypad, Panel, Item, Powered, Gauge),
+the machines it needs to be powered, and UnityEvents for what it does (onSwitched, onLive, onRefused,
+onUsed, onKeyed, onPicked). Machine.cs's comments say what each kind does.
+    lever.Use(carried);                     // the player's use; carried: the items they hold
+    keypad.Use(carried, "keypad_key_4");    // a key: the part they point at
+    door.needs = new[] { lever };           // the door is powered while the lever is on
+
+Textures: atlas.png 2048x2048, atlas_glow.png 2048x2048, floor_hosp.png 128x128, floor_ward.png 128x128, wall_brick.png 128x128, wall_hosp.png 128x128, wall_hosp_dado.png 128x128, filtered with mipmaps, colour only: the shading is baked into vertex colours, so no normal maps.
+Icons/: an inventory icon per prop, named after it, imported as a UI sprite.
+
+Props (triangles, size in metres: width x height x depth, animations)
+- floor_ward: Ward Lino, 8 tris, 2 x 0 x 2
+- floor_hosp: Corridor Lino, 8 tris, 2 x 0 x 2
+- wall_hosp: Hospital Wall, 36 tris, 2 x 4 x 0.25
+- wall_hosp_doorway: Hospital Doorway, 72 tris, 2 x 4 x 0.25
+- wall_hosp_brick_window: Outer Window Wall, 280 tris, 2 x 4 x 0.42
+- hospital_bed: Hospital Bed, 912 tris, 0.94 x 1.172 x 2.054
+- bed_curtain: Cubicle Curtain, 276 tris, 1.56 x 3.08 x 2.41, draw; a machine, switch
+- bedside_locker: Bedside Locker, 428 tris, 0.467 x 1.05 x 0.478
+- iv_stand: Drip Stand, 476 tris, 0.563 x 2 x 0.564
+- wheelchair: Wheelchair, 1404 tris, 0.67 x 1.003 x 0.836
+- visitor_chair: Visitor Chair, 216 tris, 0.46 x 0.862 x 0.513
+- radiator_hosp: Radiator, 736 tris, 1.37 x 0.83 x 0.14
+- ward_clock: Ward Clock, 212 tris, 0.37 x 0.364 x 0.075
+- lamp_bedhead: Bed-head Lamp, 208 tris, 0.24 x 0.53 x 0.42; a machine, powered
+- door_hosp: Door, 496 tris, 1.1 x 2.26 x 0.393, open; a machine, powered
+- sign_ward_1: Ward 1 Sign, 92 tris, 0.9 x 0.3 x 0.028
