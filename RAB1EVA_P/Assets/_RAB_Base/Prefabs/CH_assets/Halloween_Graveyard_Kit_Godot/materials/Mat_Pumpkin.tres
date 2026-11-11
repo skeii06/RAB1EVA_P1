@@ -1,0 +1,18 @@
+[gd_resource type="ORMMaterial3D" load_steps=5 format=3]
+
+[ext_resource type="Texture2D" path="res://textures/1K/1K_Mat_Pumpkin_BaseColor.tga" id="1_basecolor"]
+[ext_resource type="Texture2D" path="res://textures/1K/1K_Mat_Pumpkin_OcclusionRoughnessMetallic.tga" id="2_occlusionroughnessmetallic"]
+[ext_resource type="Texture2D" path="res://textures/1K/1K_Mat_Pumpkin_Normal.tga" id="3_normal"]
+[ext_resource type="Texture2D" path="res://textures/1K/1K_Mat_Pumpkin_Emissive.tga" id="4_emissive"]
+
+[resource]
+resource_name = "Mat_Pumpkin"
+albedo_texture = ExtResource("1_basecolor")
+orm_texture = ExtResource("2_occlusionroughnessmetallic")
+normal_enabled = true
+normal_texture = ExtResource("3_normal")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 3.0
+emission_operator = 1
+emission_texture = ExtResource("4_emissive")
