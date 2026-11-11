@@ -1,0 +1,48 @@
+[gd_resource type="Terrain3DAssets" format=3 uid="uid://jsir68iqjtlr"]
+
+[ext_resource type="Texture2D" path="res://textures/Ground/Terrain3D/Tex_Grass_AlbedoHeight.res" id="1_tkulv"]
+[ext_resource type="Texture2D" path="res://textures/Ground/Terrain3D/Tex_Grass_NormalRoughness.res" id="2_t3tdm"]
+[ext_resource type="Texture2D" path="res://textures/Ground/Terrain3D/Tex_Dirt_AlbedoHeight.res" id="3_505e1"]
+[ext_resource type="Texture2D" path="res://textures/Ground/Terrain3D/Tex_Dirt_NormalRoughness.res" id="4_lucgy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tkulv"]
+transparency = 4
+cull_mode = 2
+vertex_color_use_as_albedo = true
+backlight_enabled = true
+backlight = Color(0.5, 0.5, 0.5, 1)
+distance_fade_mode = 1
+distance_fade_min_distance = 128.0
+distance_fade_max_distance = 96.0
+
+[sub_resource type="Terrain3DMeshAsset" id="Terrain3DMeshAsset_t3tdm"]
+generated_type = 1
+height_offset = 0.5
+material_override = SubResource("StandardMaterial3D_tkulv")
+last_lod = 0
+last_shadow_lod = 0
+lod0_range = 128.0
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_p5lis"]
+name = "Grass"
+albedo_color = Color(0.78775924, 0.78775924, 0.78775924, 1)
+albedo_texture = ExtResource("1_tkulv")
+normal_texture = ExtResource("2_t3tdm")
+roughness = 0.45
+uv_scale = 0.5
+detiling_rotation = 0.35
+detiling_shift = 0.25
+
+[sub_resource type="Terrain3DTextureAsset" id="Terrain3DTextureAsset_knick"]
+name = "Dirt"
+id = 1
+albedo_texture = ExtResource("3_505e1")
+normal_texture = ExtResource("4_lucgy")
+roughness = 0.05
+uv_scale = 0.5
+detiling_rotation = 0.35
+detiling_shift = 0.25
+
+[resource]
+mesh_list = Array[Terrain3DMeshAsset]([SubResource("Terrain3DMeshAsset_t3tdm")])
+texture_list = Array[Terrain3DTextureAsset]([SubResource("Terrain3DTextureAsset_p5lis"), SubResource("Terrain3DTextureAsset_knick")])

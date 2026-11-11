@@ -1,0 +1,498 @@
+[gd_scene load_steps=42 format=3]
+
+[ext_resource type="PackedScene" path="res://models/2K/SM_Skull.glb" id="1_SM_Skull"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Bone.glb" id="2_SM_Bone"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_BonePile.glb" id="3_SM_BonePile"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_CandleCluster.glb" id="4_SM_CandleCluster"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Lantern.glb" id="5_SM_Lantern"]
+[ext_resource type="PackedScene" path="res://models/1K/SM_Pumpkin.glb" id="6_SM_Pumpkin"]
+[ext_resource type="PackedScene" path="res://models/1K/SM_JackOLantern.glb" id="7_SM_JackOLantern"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_SteppingStone.glb" id="8_SM_SteppingStone"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_SteppingStone_01.glb" id="9_SM_SteppingStone_01"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_SteppingStone_02.glb" id="10_SM_SteppingStone_02"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_SteppingStone_03.glb" id="11_SM_SteppingStone_03"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Shovel.glb" id="12_SM_Shovel"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Coffin.glb" id="13_SM_Coffin"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_CoffinLid.glb" id="14_SM_CoffinLid"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_OpenGrave.glb" id="15_SM_OpenGrave"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_DirtPile.glb" id="16_SM_DirtPile"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_GraveMound.glb" id="17_SM_GraveMound"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Tombstone.glb" id="18_SM_Tombstone"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Tombstone_01.glb" id="19_SM_Tombstone_01"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Tombstone_02.glb" id="20_SM_Tombstone_02"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Tombstone_03.glb" id="21_SM_Tombstone_03"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Tombstone_04.glb" id="22_SM_Tombstone_04"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_CelticCross.glb" id="23_SM_CelticCross"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_IronFencePost.glb" id="24_SM_IronFencePost"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_IronFence.glb" id="25_SM_IronFence"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_IronFenceCorner.glb" id="26_SM_IronFenceCorner"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_IronFenceBroken.glb" id="27_SM_IronFenceBroken"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_CemeteryGatePillar.glb" id="28_SM_CemeteryGatePillar"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_CemeteryGateDoor.glb" id="29_SM_CemeteryGateDoor"]
+[ext_resource type="PackedScene" path="res://models/4K/SM_DeadTree.glb" id="30_SM_DeadTree"]
+[ext_resource type="PackedScene" path="res://models/4K/SM_DeadTree_01.glb" id="31_SM_DeadTree_01"]
+[ext_resource type="PackedScene" path="res://models/4K/SM_DeadTree_02.glb" id="32_SM_DeadTree_02"]
+[ext_resource type="PackedScene" path="res://models/4K/SM_Mausoleum.glb" id="33_SM_Mausoleum"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.03, 0.035, 0.08, 1)
+sky_horizon_color = Color(0.12, 0.1, 0.18, 1)
+ground_bottom_color = Color(0.02, 0.02, 0.03, 1)
+ground_horizon_color = Color(0.12, 0.1, 0.18, 1)
+sun_angle_max = 10.0
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.45, 0.45, 0.6, 1)
+ambient_light_energy = 0.6
+tonemap_mode = 3
+glow_enabled = true
+glow_intensity = 1.0
+glow_bloom = 0.1
+fog_enabled = true
+fog_light_color = Color(0.25, 0.25, 0.38, 1)
+fog_density = 0.012
+
+[sub_resource type="StandardMaterial3D" id="ground_mat"]
+albedo_color = Color(0.07, 0.06, 0.06, 1)
+roughness = 1.0
+
+[sub_resource type="PlaneMesh" id="ground_0"]
+material = SubResource("ground_mat")
+size = Vector2(15.1795, 28)
+
+[sub_resource type="PlaneMesh" id="ground_1"]
+material = SubResource("ground_mat")
+size = Vector2(15.4205, 28)
+
+[sub_resource type="PlaneMesh" id="ground_2"]
+material = SubResource("ground_mat")
+size = Vector2(1.4, 19.2)
+
+[sub_resource type="PlaneMesh" id="ground_3"]
+material = SubResource("ground_mat")
+size = Vector2(1.4, 6.2)
+
+[node name="PropLayout" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+
+[node name="Moonlight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.7433, -0.498, 0.4467, 0, 0.6677, 0.7444, -0.669, -0.5533, 0.4963, 0, 12, 0)
+light_color = Color(0.7, 0.75, 1, 1)
+light_energy = 1.2
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.824, 0.5665, 0, -0.5665, 0.824, 0, 11, 9)
+current = true
+fov = 60.0
+
+[node name="Ground" type="Node3D" parent="."]
+
+[node name="Ground0" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.4103, -0.005, -10)
+mesh = SubResource("ground_0")
+
+[node name="Ground1" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.2897, -0.005, -10)
+mesh = SubResource("ground_1")
+
+[node name="Ground2" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1205, -0.005, -14.4)
+mesh = SubResource("ground_2")
+
+[node name="Ground3" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1205, -0.005, 0.9)
+mesh = SubResource("ground_3")
+
+[node name="Props" type="Node3D" parent="."]
+
+[node name="Labels" type="Node3D" parent="."]
+
+[node name="SM_Skull" parent="Props" instance=ExtResource("1_SM_Skull")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.2741, 0, 0.0032)
+
+[node name="SM_Skull_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.2741, 0.12, 0.4733)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Skull"
+
+[node name="SM_Bone" parent="Props" instance=ExtResource("2_SM_Bone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9509, 0, 0.01)
+
+[node name="SM_Bone_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.9509, 0.12, 0.755)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Bone"
+
+[node name="SM_BonePile" parent="Props" instance=ExtResource("3_SM_BonePile")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3126, 0, 0.0193)
+
+[node name="SM_BonePile_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.3122, 0.12, 0.6106)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_BonePile"
+
+[node name="SM_CandleCluster" parent="Props" instance=ExtResource("4_SM_CandleCluster")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7024, 0, 0)
+
+[node name="SM_CandleCluster_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7024, 0.12, 0.91)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_CandleCluster"
+
+[node name="SM_Lantern" parent="Props" instance=ExtResource("5_SM_Lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3586, 0, 0)
+
+[node name="SM_Lantern_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.332, 0.12, 0.4814)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Lantern"
+
+[node name="SM_Pumpkin" parent="Props" instance=ExtResource("6_SM_Pumpkin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9002, 0, 0)
+
+[node name="SM_Pumpkin_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8816, 0.12, 0.96)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Pumpkin"
+
+[node name="SM_JackOLantern" parent="Props" instance=ExtResource("7_SM_JackOLantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8317, 0, 0)
+
+[node name="SM_JackOLantern_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8144, 0.12, 0.65)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_JackOLantern"
+
+[node name="SM_SteppingStone" parent="Props" instance=ExtResource("8_SM_SteppingStone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4146, 0, -0.0023)
+
+[node name="SM_SteppingStone_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4291, 0.12, 0.8762)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_SteppingStone"
+
+[node name="SM_SteppingStone_01" parent="Props" instance=ExtResource("9_SM_SteppingStone_01")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8682, 0, 0.0095)
+
+[node name="SM_SteppingStone_01_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8838, 0.12, 0.5087)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_SteppingStone_01"
+
+[node name="SM_SteppingStone_02" parent="Props" instance=ExtResource("10_SM_SteppingStone_02")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2971, 0, -0.0072)
+
+[node name="SM_SteppingStone_02_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.3211, 0.12, 0.8956)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_SteppingStone_02"
+
+[node name="SM_SteppingStone_03" parent="Props" instance=ExtResource("11_SM_SteppingStone_03")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8021, 0, -0.0061)
+
+[node name="SM_SteppingStone_03_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.8094, 0.12, 0.5559)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_SteppingStone_03"
+
+[node name="SM_Shovel" parent="Props" instance=ExtResource("12_SM_Shovel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.2066, 0, 0.0484)
+
+[node name="SM_Shovel_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.2066, 0.12, 0.7776)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Shovel"
+
+[node name="SM_Coffin" parent="Props" instance=ExtResource("13_SM_Coffin")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2954, 0, -3.5)
+
+[node name="SM_Coffin_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.2954, 0.12, -2.1148)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Coffin"
+
+[node name="SM_CoffinLid" parent="Props" instance=ExtResource("14_SM_CoffinLid")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2635, 0, -3.5)
+
+[node name="SM_CoffinLid_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2635, 0.12, -2.0942)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_CoffinLid"
+
+[node name="SM_OpenGrave" parent="Props" instance=ExtResource("15_SM_OpenGrave")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1205, 0, -3.5)
+
+[node name="SM_OpenGrave_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1205, 0.12, -1.85)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_OpenGrave"
+
+[node name="SM_DirtPile" parent="Props" instance=ExtResource("16_SM_DirtPile")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.196, 0, -3.4846)
+
+[node name="SM_DirtPile_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2227, 0.12, -2.6017)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_DirtPile"
+
+[node name="SM_GraveMound" parent="Props" instance=ExtResource("17_SM_GraveMound")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.4161, 0, -3.464)
+
+[node name="SM_GraveMound_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.3752, 0.12, -2.0861)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_GraveMound"
+
+[node name="SM_Tombstone" parent="Props" instance=ExtResource("18_SM_Tombstone")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9052, 0, -7)
+
+[node name="SM_Tombstone_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.9052, 0.12, -6.5053)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Tombstone"
+
+[node name="SM_Tombstone_01" parent="Props" instance=ExtResource("19_SM_Tombstone_01")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.419, 0, -7)
+
+[node name="SM_Tombstone_01_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.419, 0.12, -6.4833)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Tombstone_01"
+
+[node name="SM_Tombstone_02" parent="Props" instance=ExtResource("20_SM_Tombstone_02")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9134, 0, -7)
+
+[node name="SM_Tombstone_02_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9019, 0.12, -6.5043)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Tombstone_02"
+
+[node name="SM_Tombstone_03" parent="Props" instance=ExtResource("21_SM_Tombstone_03")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5387, 0, -7.0017)
+
+[node name="SM_Tombstone_03_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5519, 0.12, -6.5555)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Tombstone_03"
+
+[node name="SM_Tombstone_04" parent="Props" instance=ExtResource("22_SM_Tombstone_04")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.1245, 0, -7.063)
+
+[node name="SM_Tombstone_04_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.162, 0.12, -6.3914)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Tombstone_04"
+
+[node name="SM_CelticCross" parent="Props" instance=ExtResource("23_SM_CelticCross")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8194, 0, -7)
+
+[node name="SM_CelticCross_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.8171, 0.12, -6.4693)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_CelticCross"
+
+[node name="SM_IronFencePost" parent="Props" instance=ExtResource("24_SM_IronFencePost")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.6342, 0, -10.497)
+
+[node name="SM_IronFencePost_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.601, 0.12, -10.077)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_IronFencePost"
+
+[node name="SM_IronFence" parent="Props" instance=ExtResource("25_SM_IronFence")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5972, 0, -10.5)
+
+[node name="SM_IronFence_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5965, 0.12, -10.1344)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_IronFence"
+
+[node name="SM_IronFenceCorner" parent="Props" instance=ExtResource("26_SM_IronFenceCorner")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6797, 0, -10.0059)
+
+[node name="SM_IronFenceCorner_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.186, 0.12, -9.6404)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_IronFenceCorner"
+
+[node name="SM_IronFenceBroken" parent="Props" instance=ExtResource("27_SM_IronFenceBroken")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.224, 0, -10.2638)
+
+[node name="SM_IronFenceBroken_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2243, 0.12, -9.8983)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_IronFenceBroken"
+
+[node name="SM_CemeteryGatePillar" parent="Props" instance=ExtResource("28_SM_CemeteryGatePillar")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4354, 0, -10.5)
+
+[node name="SM_CemeteryGatePillar_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.465, 0.12, -9.84)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_CemeteryGatePillar"
+
+[node name="SM_CemeteryGateDoor" parent="Props" instance=ExtResource("29_SM_CemeteryGateDoor")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.7058, 0, -10.5)
+
+[node name="SM_CemeteryGateDoor_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.2044, 0.12, -10.1288)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_CemeteryGateDoor"
+
+[node name="SM_DeadTree" parent="Props" instance=ExtResource("30_SM_DeadTree")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.661, 0, -16.7853)
+
+[node name="SM_DeadTree_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.4491, 0.12, -15.4534)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_DeadTree"
+
+[node name="SM_DeadTree_01" parent="Props" instance=ExtResource("31_SM_DeadTree_01")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.0546, 0, -16.538)
+
+[node name="SM_DeadTree_01_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.9935, 0.12, -15.4297)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_DeadTree_01"
+
+[node name="SM_DeadTree_02" parent="Props" instance=ExtResource("32_SM_DeadTree_02")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6343, 0, -16.9655)
+
+[node name="SM_DeadTree_02_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6101, 0.12, -15.1104)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_DeadTree_02"
+
+[node name="SM_Mausoleum" parent="Props" instance=ExtResource("33_SM_Mausoleum")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.9052, 0, -15.756)
+
+[node name="SM_Mausoleum_Label" type="Label3D" parent="Labels"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0219, 0.12, -13.4522)
+billboard = 1
+pixel_size = 0.0035
+font_size = 48
+outline_size = 10
+text = "SM_Mausoleum"
+
+[node name="SM_JackOLantern_Light" type="OmniLight3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8317, 0.35, 0)
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 1.5
+omni_range = 2.5
+
+[node name="SM_Lantern_Light" type="OmniLight3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3586, 0.35, 0)
+light_color = Color(1, 0.7, 0.35, 1)
+light_energy = 1.2
+omni_range = 2.5
+
+[node name="SM_CandleCluster_Light" type="OmniLight3D" parent="Props"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.7024, 0.35, 0)
+light_color = Color(1, 0.65, 0.3, 1)
+light_energy = 1.0
+omni_range = 2.5

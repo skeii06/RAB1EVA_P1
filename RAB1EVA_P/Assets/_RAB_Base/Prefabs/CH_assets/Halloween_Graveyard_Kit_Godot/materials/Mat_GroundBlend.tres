@@ -1,0 +1,37 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://bpae3snwrtdgt"]
+
+[ext_resource type="Shader" uid="uid://c7tt64flttt3k" path="res://materials/Mat_GroundBlend_Shader.tres" id="1_24hov"]
+[ext_resource type="Texture2D" uid="uid://daowov4t773ki" path="res://textures/Ground/Tex_Dirt_BaseColor.tga" id="2_ohf60"]
+[ext_resource type="Texture2D" uid="uid://dmuv7stvcctea" path="res://textures/Ground/Tex_Dirt_Normal.tga" id="3_kiipd"]
+[ext_resource type="Texture2D" uid="uid://b455frcyg864r" path="res://textures/Ground/Tex_Dirt_OcclusionRoughnessMetallic.tga" id="4_npqbc"]
+[ext_resource type="Texture2D" uid="uid://dtybmf7iijnxm" path="res://textures/Ground/Tex_Grass_BaseColor.tga" id="5_mjaqu"]
+[ext_resource type="Texture2D" uid="uid://bb415vpjp2rw2" path="res://textures/Ground/Tex_Grass_Normal.tga" id="6_2b833"]
+[ext_resource type="Texture2D" uid="uid://dw1q7kjtbqvu6" path="res://textures/Ground/Tex_Grass_OcclusionRoughnessMetallic.tga" id="7_2btnc"]
+[ext_resource type="Texture2D" uid="uid://byd6ffy3ystpt" path="res://textures/Ground/Tex_VariationNoise.tres" id="8_hgecx"]
+
+[resource]
+resource_name = "Mat_GroundBlend"
+render_priority = 0
+shader = ExtResource("1_24hov")
+shader_parameter/use_world_uv = true
+shader_parameter/tile_size = 2.0
+shader_parameter/grass_albedo = ExtResource("5_mjaqu")
+shader_parameter/variation_rotation = 37.0
+shader_parameter/variation_scale = 6.0
+shader_parameter/variation_noise = ExtResource("8_hgecx")
+shader_parameter/variation_strength = 1.0
+shader_parameter/grass_hue = -147.2329984435675
+shader_parameter/grass_saturation = 2.0
+shader_parameter/grass_lightness = -0.03499995416250001
+shader_parameter/dirt_albedo = ExtResource("2_ohf60")
+shader_parameter/dirt_hue = 94.04101301694749
+shader_parameter/dirt_saturation = 1.0
+shader_parameter/dirt_lightness = 0.0
+shader_parameter/blend_sharpness = 0.5
+shader_parameter/invert_mask = true
+shader_parameter/dirt_orm = ExtResource("4_npqbc")
+shader_parameter/grass_orm = ExtResource("7_2btnc")
+shader_parameter/height_influence = 1.5
+shader_parameter/grass_normal = ExtResource("6_2b833")
+shader_parameter/dirt_normal = ExtResource("3_kiipd")
+shader_parameter/normal_strength = 1.0
