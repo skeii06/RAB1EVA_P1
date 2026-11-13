@@ -247,7 +247,7 @@ MonoBehaviour:
   sfxList:
   - {fileID: 8300000, guid: d3469b07ec6c0b94eb017a8d3ff1017b, type: 3}
   - {fileID: 8300000, guid: 74a05b92e48855f4ca373c8f94f18c0f, type: 3}
-  - {fileID: 8300000, guid: e07d5aa9e36c2404f952345371717cac, type: 3}
+  - {fileID: 8300000, guid: 629219f009b961942a7d47762daa876a, type: 3}
   - {fileID: 8300000, guid: 31cef3202bf9bd94d83ce7a26b452ff2, type: 3}
   sfxSource: {fileID: 8591341639417929703}
 --- !u!82 &8591341639417929703
