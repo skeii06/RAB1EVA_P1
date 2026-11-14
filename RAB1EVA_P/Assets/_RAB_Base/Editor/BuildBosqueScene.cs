@@ -11,8 +11,15 @@ public static class BuildBosqueScene
     const string PlayerPath = "Assets/_RAB_Base/Prefabs/Player.prefab";
     const string PickupPath = "Assets/_RAB_Base/Prefabs/PickUp.prefab";
     const string PinePath = "Assets/_RAB_Base/Prefabs/CH_assets/plague/Polytope Studio/Lowpoly_Environments/Prefabs/Trees/PT_Pine_Tree_03_dead.prefab";
+    const string GnarledTreePath = "Assets/_RAB_Base/Prefabs/CH_assets/plague/Polytope Studio/Lowpoly_Environments/Prefabs/Trees/PT_Fruit_Tree_01_dead.prefab";
     const string TreePath = "Assets/TreeGenerator/Trees/Prefab/Prefab_Tree_Unity.prefab";
     const string GrassTexturePath = "Assets/_RAB_Base/Prefabs/CH_assets/Halloween_Graveyard_Kit_Godot/textures/Ground/Tex_Grass_BaseColor.tga";
+    const string DirtTexturePath = "Assets/_RAB_Base/Prefabs/CH_assets/Halloween_Graveyard_Kit_Godot/textures/Ground/Tex_Dirt_BaseColor.tga";
+    const string SwampGrassPath = "Assets/_RAB_Base/Prefabs/CH_assets/EmaceArt/NecroPOLY Dark Corners/Prefabs/Assets/Nature/EA_Swamp_Grass_04a_PRE.prefab";
+    const string SwampRootPath = "Assets/_RAB_Base/Prefabs/CH_assets/EmaceArt/NecroPOLY Dark Corners/Prefabs/Assets/Nature/EA_Swamp_Root_04d_PRE.prefab";
+    const string SwampStonePath = "Assets/_RAB_Base/Prefabs/CH_assets/EmaceArt/NecroPOLY Dark Corners/Prefabs/Assets/Nature/EA_Swamp_Stones_02a_PRE.prefab";
+    const string DeadHillPath = "Assets/_RAB_Base/Prefabs/CH_assets/EmaceArt/NecroPOLY Dark Corners/Prefabs/Assets/Ground/EA_Swamp_Grass_Hill_Dead_01a_PRE.prefab";
+    const string DeadShrubPath = "Assets/_RAB_Base/Prefabs/CH_assets/plague/Polytope Studio/Lowpoly_Environments/Prefabs/Shrubs/PT_Generic_Shrub_01_dead.prefab";
 
     [MenuItem("Tools/Roll of Fear/Build BOSQUE Level")]
     public static void Build()
@@ -72,16 +79,21 @@ public static class BuildBosqueScene
         RenderSettings.fog = true;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
         RenderSettings.fogColor = new Color(0.035f, 0.055f, 0.085f);
-        RenderSettings.fogDensity = 0.018f;
+        RenderSettings.fogDensity = 0.013f;
         RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
-        RenderSettings.ambientLight = new Color(0.12f, 0.16f, 0.22f);
+        RenderSettings.ambientLight = new Color(0.18f, 0.21f, 0.23f);
         RenderSettings.skybox = null;
         RenderSettings.defaultReflectionMode = UnityEngine.Rendering.DefaultReflectionMode.Custom;
         if (RenderSettings.sun != null) { RenderSettings.sun.color = new Color(0.52f, 0.64f, 0.82f); RenderSettings.sun.intensity = 0.32f; }
 
         var world = new GameObject("BOSQUE | Sendero guiado");
-        var groundMat = MakeMat("M_Bosque_Suelo", new Color(0.15f, 0.105f, 0.075f));
-        var terrainMat = MakeMat("M_Bosque_Terreno", new Color(0.48f, 0.48f, 0.35f));
+        var groundMat = MakeMat("M_Bosque_Suelo", new Color(0.34f, 0.25f, 0.17f));
+        var terrainMat = MakeMat("M_Bosque_Terreno", new Color(0.43f, 0.43f, 0.31f));
+        var undergrowthMat = MakeMat("M_Bosque_Maleza", new Color(0.18f, 0.24f, 0.15f));
+        var stoneMat = MakeMat("M_Bosque_Piedra", new Color(0.18f, 0.21f, 0.23f));
+        var leafMat = MakeMat("M_Bosque_Follaje", new Color(0.095f, 0.15f, 0.12f));
+        var leafMatAlt = MakeMat("M_Bosque_Follaje_2", new Color(0.14f, 0.18f, 0.13f));
+        var barkMat = MakeMat("M_Bosque_Tronco", new Color(0.18f, 0.12f, 0.075f));
         var grassTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(GrassTexturePath);
         if (grassTexture != null)
         {
@@ -89,66 +101,104 @@ public static class BuildBosqueScene
             terrainMat.SetTextureScale("_BaseMap", new Vector2(14f, 14f));
             EditorUtility.SetDirty(terrainMat);
         }
+        var dirtTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(DirtTexturePath);
+        if (dirtTexture != null)
+        {
+            groundMat.SetTexture("_BaseMap", dirtTexture);
+            groundMat.SetTextureScale("_BaseMap", new Vector2(2.0f, 18f));
+            EditorUtility.SetDirty(groundMat);
+        }
         var edgeMat = MakeMat("M_Bosque_Borde", new Color(0.16f, 0.20f, 0.22f));
-        var barkMat = MakeMat("M_Bosque_Tronco", new Color(0.13f, 0.095f, 0.075f));
-        var foliageMat = MakeMat("M_Bosque_Follaje", new Color(0.055f, 0.105f, 0.105f));
         var redMat = MakeMat("M_Bosque_Rojo", new Color(0.55f, 0.045f, 0.035f), true);
 
-        Cube(world.transform, "Terreno | hierba oscura y quemada", new Vector3(0, -0.65f, 20), new Vector3(42f, 1f, 60f), terrainMat, "Ground");
-        Cube(world.transform, "Camino | barro oscuro", new Vector3(0, -0.25f, 20), new Vector3(7.2f, 0.5f, 48), groundMat, "Ground");
-        Cube(world.transform, "Límite izquierdo", new Vector3(-4.2f, 0.15f, 20), new Vector3(0.8f, 1.5f, 48), edgeMat, "Ground");
-        Cube(world.transform, "Límite derecho", new Vector3(4.2f, 0.15f, 20), new Vector3(0.8f, 1.5f, 48), edgeMat, "Ground");
+        const float trailEnd = 66f;
+        const float trailCenter = 32f;
+        Cube(world.transform, "Terreno | hierba oscura y quemada", new Vector3(0, -0.65f, trailCenter), new Vector3(54f, 1f, 82f), terrainMat, "Ground");
+        Cube(world.transform, "Camino | tierra húmeda", new Vector3(0, -0.25f, trailCenter), new Vector3(7.2f, 0.5f, 68f), groundMat, "Ground");
+        Cube(world.transform, "Límite izquierdo", new Vector3(-4.2f, 0.15f, trailCenter), new Vector3(0.8f, 1.5f, 68f), edgeMat, "Ground");
+        Cube(world.transform, "Límite derecho", new Vector3(4.2f, 0.15f, trailCenter), new Vector3(0.8f, 1.5f, 68f), edgeMat, "Ground");
 
-        // Dense forest wall of dead pines, with the imported Unity tree as a secondary silhouette.
-        var pinePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PinePath);
-        var treePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(TreePath);
-        var rng = new System.Random(62026);
-        for (int z = -4; z <= 46; z += 3)
+        // Layered tree lines use three already imported low-poly tree silhouettes.
+        var treePrefabs = new List<GameObject>();
+        foreach (var path in new[] { PinePath, GnarledTreePath, TreePath })
         {
-            for (int side = -1; side <= 1; side += 2)
+            var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab != null) treePrefabs.Add(prefab);
+        }
+        var grassPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SwampGrassPath);
+        var rootPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SwampRootPath);
+        var stonePrefab = AssetDatabase.LoadAssetAtPath<GameObject>(SwampStonePath);
+        var hillPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(DeadHillPath);
+        var shrubPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(DeadShrubPath);
+        var rng = new System.Random(62026);
+        int row = 0;
+        for (float z = -6f; z <= trailEnd + 2f; z += 2.8f, row++)
+        {
+            int sideIndex = 0;
+            for (int side = -1; side <= 1; side += 2, sideIndex++)
             {
-                float x = side * (7.0f + (float)rng.NextDouble() * 4.0f);
-                float zz = z + (float)rng.NextDouble() * 2.0f;
-                var chosen = (z % 2 == 0 && pinePrefab != null) ? pinePrefab : treePrefab;
-                if (chosen != null)
+                float x = side * (7.2f + (float)rng.NextDouble() * 3.8f);
+                float zz = z + (float)rng.NextDouble() * 1.8f;
+                if (treePrefabs.Count > 0)
                 {
+                    var chosen = treePrefabs[(row + sideIndex) % treePrefabs.Count];
                     var instance = (GameObject)PrefabUtility.InstantiatePrefab(chosen);
-                    instance.name = chosen == pinePrefab ? "Pino seco | bosque" : "Árbol sombrío";
-                    instance.transform.SetParent(world.transform);
-                    instance.transform.position = new Vector3(x, 0, zz);
-                    instance.transform.rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360, 0);
-                    float scale = chosen == pinePrefab ? 0.72f + (float)rng.NextDouble() * 0.24f : 0.78f + (float)rng.NextDouble() * 0.25f;
-                    instance.transform.localScale = Vector3.one * scale;
-                    foreach (var renderer in instance.GetComponentsInChildren<Renderer>(true))
-                    {
-                        var sourceMaterials = renderer.sharedMaterials;
-                        var safeMaterials = new Material[sourceMaterials.Length];
-                        for (int materialIndex = 0; materialIndex < sourceMaterials.Length; materialIndex++)
-                        {
-                            string materialName = sourceMaterials[materialIndex] != null ? sourceMaterials[materialIndex].name.ToLowerInvariant() : "";
-                            safeMaterials[materialIndex] = materialName.Contains("leaf") || materialName.Contains("foliage") || materialName.Contains("billboard") ? foliageMat : barkMat;
-                        }
-                        renderer.sharedMaterials = safeMaterials;
-                    }
+                    instance.name = "Árbol de ribera | " + chosen.name;
+                    Place(instance, world.transform, new Vector3(x, 0, zz), Quaternion.Euler(0, (float)rng.NextDouble() * 360, 0), Vector3.one * (0.78f + (float)rng.NextDouble() * 0.38f));
+                    SetTreeMaterials(instance, barkMat, (row + sideIndex) % 2 == 0 ? leafMat : leafMatAlt);
                 }
-                // Dark understory closes gaps and keeps the playable route visually legible.
-                for (int k = 0; k < 2; k++)
+
+                // An outer, less regular row gives the forest a deeper horizon.
+                if (row % 2 == 0 && treePrefabs.Count > 0)
                 {
-                    float bx = side * (4.7f + (float)rng.NextDouble() * 1.0f);
-                    var bush = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    bush.name = "Matorral oscuro"; bush.transform.SetParent(world.transform);
-                    bush.transform.position = new Vector3(bx, 0.4f, zz + k * 1.4f);
-                    bush.transform.localScale = new Vector3(1.4f, 1.2f, 1.8f);
-                    bush.GetComponent<Renderer>().sharedMaterial = groundMat;
-                    UnityEngine.Object.DestroyImmediate(bush.GetComponent<Collider>());
+                    var outer = (GameObject)PrefabUtility.InstantiatePrefab(treePrefabs[(row + sideIndex + 1) % treePrefabs.Count]);
+                    outer.name = "Árbol lejano | bosque";
+                    Place(outer, world.transform, new Vector3(side * (14f + (float)rng.NextDouble() * 6f), 0, zz + (float)rng.NextDouble() * 2.8f), Quaternion.Euler(0, (float)rng.NextDouble() * 360, 0), Vector3.one * (0.8f + (float)rng.NextDouble() * 0.45f));
+                    SetTreeMaterials(outer, barkMat, (row + sideIndex) % 2 == 0 ? leafMatAlt : leafMat);
                 }
+
+                var undergrowth = (row % 3 == 0) ? shrubPrefab : grassPrefab;
+                if (undergrowth != null)
+                {
+                    var plant = (GameObject)PrefabUtility.InstantiatePrefab(undergrowth);
+                    plant.name = row % 3 == 0 ? "Arbusto seco" : "Hierba de ciénaga";
+                    Place(plant, world.transform, new Vector3(side * (4.9f + (float)rng.NextDouble() * 2.0f), 0, zz + (float)rng.NextDouble() * 1.7f), Quaternion.Euler(0, (float)rng.NextDouble() * 360, 0), Vector3.one * (0.75f + (float)rng.NextDouble() * 0.65f));
+                    SetAllMaterials(plant, undergrowthMat);
+                }
+            }
+        }
+
+        // Stones, exposed roots and dead grass mounds break up the flat ground plane.
+        for (int i = 0; i < 54; i++)
+        {
+            int side = rng.Next(0, 2) == 0 ? -1 : 1;
+            float x = side * (5.3f + (float)rng.NextDouble() * 14.0f);
+            float z = -5f + (float)rng.NextDouble() * (trailEnd + 10f);
+            var detailPrefab = i % 3 == 0 ? rootPrefab : stonePrefab;
+            if (detailPrefab != null)
+            {
+                var detail = (GameObject)PrefabUtility.InstantiatePrefab(detailPrefab);
+                detail.name = i % 3 == 0 ? "Raíces expuestas" : "Piedras cubiertas de musgo";
+                Place(detail, world.transform, new Vector3(x, -0.05f, z), Quaternion.Euler(0, (float)rng.NextDouble() * 360, 0), Vector3.one * (0.55f + (float)rng.NextDouble() * 1.1f));
+                SetAllMaterials(detail, i % 3 == 0 ? barkMat : stoneMat);
+            }
+        }
+        if (hillPrefab != null)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                int side = i % 2 == 0 ? -1 : 1;
+                var hill = (GameObject)PrefabUtility.InstantiatePrefab(hillPrefab);
+                hill.name = "Loma de hierba muerta";
+                Place(hill, world.transform, new Vector3(side * (17f + (float)rng.NextDouble() * 4f), -0.2f, -3f + i / 2 * 12f + (float)rng.NextDouble() * 4f), Quaternion.Euler(0, (float)rng.NextDouble() * 360, 0), new Vector3(2.0f + (float)rng.NextDouble() * 2f, 1.0f + (float)rng.NextDouble() * 0.9f, 2.0f + (float)rng.NextDouble() * 2f));
+                SetAllMaterials(hill, terrainMat);
             }
         }
 
         var pickupPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PickupPath);
         if (pickupPrefab != null)
         {
-            foreach (float z in new[] { 5f, 13f, 22f, 31f, 40f })
+            foreach (float z in new[] { 7f, 20f, 33f, 46f, 59f })
             {
                 var pickup = (GameObject)PrefabUtility.InstantiatePrefab(pickupPrefab);
                 pickup.name = "Recuerdo | pickup"; pickup.transform.position = new Vector3(0, 0.9f, z);
@@ -164,9 +214,18 @@ public static class BuildBosqueScene
         log.GetComponent<Renderer>().sharedMaterial = barkMat;
         log.tag = "Untagged";
 
-        for (int i = 0; i < 4; i++)
+        // A second low branch makes the longer path feel paced without changing its guided layout.
+        var branch = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        branch.name = "Rama caída | segundo salto"; branch.transform.SetParent(world.transform);
+        branch.transform.position = new Vector3(0, 0.32f, 45.5f);
+        branch.transform.rotation = Quaternion.Euler(0, 0, 90);
+        branch.transform.localScale = new Vector3(0.32f, 2.35f, 0.32f);
+        branch.GetComponent<Renderer>().sharedMaterial = barkMat;
+        branch.tag = "Untagged";
+
+        for (int i = 0; i < 6; i++)
         {
-            float z = 7 + i * 11;
+            float z = 8 + i * 11.2f;
             var marker = GameObject.CreatePrimitive(PrimitiveType.Cube);
             marker.name = "Farol rojo tenue"; marker.transform.SetParent(world.transform);
             marker.transform.position = new Vector3(i % 2 == 0 ? -3.45f : 3.45f, 0.18f, z);
@@ -179,17 +238,18 @@ public static class BuildBosqueScene
         }
 
         // Cool pools of light keep the ball and guided path readable through the fog.
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 8; i++)
         {
             var lightGo = new GameObject("Luz fría | sendero"); lightGo.transform.SetParent(world.transform);
-            lightGo.transform.position = new Vector3(0, 2.4f, 3 + i * 7.2f);
+            lightGo.transform.position = new Vector3(0, 2.4f, 3 + i * 8.4f);
             var light = lightGo.AddComponent<Light>(); light.type = LightType.Point;
             light.color = new Color(0.48f, 0.67f, 1.0f); light.intensity = 3.0f; light.range = 8.0f;
         }
 
-        // No free exploration: the trail terminates at a visible exit gate.
-        Cube(world.transform, "Salida del bosque", new Vector3(0, 1.2f, 44.5f), new Vector3(5.8f, 2.4f, 0.35f), edgeMat, "Ground");
-        Cube(world.transform, "Hueco de salida", new Vector3(0, 1.1f, 44.3f), new Vector3(2.1f, 2.1f, 0.5f), groundMat, "Ground");
+        // Timber arch gives the guided trail a clear end while leaving its center open.
+        Cube(world.transform, "Portal final | pilar izquierdo", new Vector3(-2.75f, 1.45f, 64.3f), new Vector3(0.45f, 2.9f, 0.55f), barkMat, "Ground");
+        Cube(world.transform, "Portal final | pilar derecho", new Vector3(2.75f, 1.45f, 64.3f), new Vector3(0.45f, 2.9f, 0.55f), barkMat, "Ground");
+        Cube(world.transform, "Portal final | dintel", new Vector3(0, 2.9f, 64.3f), new Vector3(5.95f, 0.48f, 0.58f), barkMat, "Ground");
 
         var build = new List<EditorBuildSettingsScene>(EditorBuildSettings.scenes);
         bool bosqueEnabled = true;
@@ -233,6 +293,40 @@ public static class BuildBosqueScene
         if (emission) { mat.EnableKeyword("_EMISSION"); mat.SetColor("_EmissionColor", color * 1.8f); }
         EditorUtility.SetDirty(mat);
         return mat;
+    }
+
+    static void Place(GameObject instance, Transform parent, Vector3 position, Quaternion rotation, Vector3 scale)
+    {
+        instance.transform.SetParent(parent);
+        instance.transform.position = position;
+        instance.transform.rotation = rotation;
+        instance.transform.localScale = scale;
+    }
+
+    static void SetTreeMaterials(GameObject tree, Material bark, Material foliage)
+    {
+        foreach (var renderer in tree.GetComponentsInChildren<Renderer>(true))
+        {
+            var source = renderer.sharedMaterials;
+            var safe = new Material[source.Length];
+            for (int i = 0; i < source.Length; i++)
+            {
+                string materialName = source[i] != null ? source[i].name.ToLowerInvariant() : "";
+                safe[i] = materialName.Contains("leaf") || materialName.Contains("foliage") || materialName.Contains("billboard") || materialName.Contains("leaves") ? foliage : bark;
+            }
+            renderer.sharedMaterials = safe;
+        }
+    }
+
+    static void SetAllMaterials(GameObject instance, Material material)
+    {
+        foreach (var renderer in instance.GetComponentsInChildren<Renderer>(true))
+        {
+            var source = renderer.sharedMaterials;
+            var safe = new Material[source.Length];
+            for (int i = 0; i < safe.Length; i++) safe[i] = material;
+            renderer.sharedMaterials = safe;
+        }
     }
 
     static GameObject Cube(Transform parent, string name, Vector3 pos, Vector3 scale, Material mat, string tag)
