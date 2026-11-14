@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement; //Librería de carga/descarga de escenas
 
 public class PlayerInteractor : MonoBehaviour
 {
+    bool failureShown;
+    bool transitionStarted;
     [Header("Respawn Configuration")]
     public Transform respawnPoint; //Ref al punto de respawn para usar su posición
     public float respawnFallLimit = -10; //Valor negativo en eje Y a partir del cual se respawnea
@@ -30,15 +32,19 @@ public class PlayerInteractor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Respawn por caída
-        if (transform.position.y <= respawnFallLimit) 
-        { 
-            Respawn();
+        if (failureShown || transitionStarted) return;
+
+        //Una caída ahora usa la pantalla de derrota; Retry recarga el mismo nivel.
+        if (transform.position.y <= respawnFallLimit)
+        {
+            FailLevel(null);
+            return;
         }
 
         //Condición de victoria: Cuando points alcanza winpoints, cambiamos de escena
-        if (points >= winPoints)
+        if (points >= winPoints && !transitionStarted)
         {
+            transitionStarted = true;
             ChangeScene();
         }
     }
@@ -47,8 +53,8 @@ public class PlayerInteractor : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            //Respawn por choque de obstáculo
-            Respawn();
+            var monster = collision.gameObject.GetComponentInParent<ForestMonsterChase>();
+            FailLevel(monster != null ? monster.stinger : null);
         }
 
         
@@ -85,7 +91,19 @@ public class PlayerInteractor : MonoBehaviour
     void ChangeScene()
     {
         //Acción que al ejecutarse carga la escena asignada a la variable sceneToLoad
+        Time.timeScale = 1f;
         SceneManager.LoadScene(sceneToLoad);
+    }
+
+    void FailLevel(AudioClip deathStinger)
+    {
+        if (failureShown) return;
+        failureShown = true;
+        if (HorrorGameFlow.TryShowDeath(deathStinger)) return;
+
+        //Respaldo para escenas ejecutadas antes de que se inicialice el flujo global.
+        failureShown = false;
+        Respawn();
     }
 
 

@@ -9,8 +9,8 @@ EditorBuildSettings:
     path: Assets/_RAB_Base/Scenes/SCN_MainMenu.unity
     guid: 39332ef17fe4bc843b5d4d16defe1e35
   - enabled: 1
-    path: Assets/_RAB_Base/Scenes/SCN_LVL01.unity
-    guid: c101093b4fc794040bf03b22a9b938dc
+    path: Assets/_RAB_Base/Scenes/SCN_LVL_CH.unity
+    guid: 3f39430f8b2d4244da9862d0a630db51
   - enabled: 1
     path: Assets/_RAB_Base/Scenes/SCN_LVL02_BOSQUE.unity
     guid: 5c2be57120291264987d96af5073f803

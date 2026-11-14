@@ -84,6 +84,9 @@ public sealed class ForestMonsterChase : MonoBehaviour
         if (!chasing || !collision.gameObject.CompareTag("Player")) return;
         chasing = false;
         if (bodyCollider != null) bodyCollider.enabled = false;
+        if (HorrorGameFlow.TryShowDeath(stinger)) return;
+
+        //Mantiene el comportamiento de recuperación si el flujo global no está disponible.
         transform.position = grid != null ? grid.CellCenter(spawnCell) : Vector3.zero;
         if (stinger != null && player != null) AudioSource.PlayClipAtPoint(stinger, player.position, 0.55f);
         StartCoroutine(ResumeAfterHit());

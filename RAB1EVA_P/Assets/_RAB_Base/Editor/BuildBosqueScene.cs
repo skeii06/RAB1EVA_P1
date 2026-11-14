@@ -21,21 +21,25 @@ public static class BuildBosqueScene
     const string SwampStonePath = "Assets/_RAB_Base/Prefabs/CH_assets/EmaceArt/NecroPOLY Dark Corners/Prefabs/Assets/Nature/EA_Swamp_Stones_02a_PRE.prefab";
     const string DeadHillPath = "Assets/_RAB_Base/Prefabs/CH_assets/EmaceArt/NecroPOLY Dark Corners/Prefabs/Assets/Ground/EA_Swamp_Grass_Hill_Dead_01a_PRE.prefab";
     const string DeadShrubPath = "Assets/_RAB_Base/Prefabs/CH_assets/plague/Polytope Studio/Lowpoly_Environments/Prefabs/Shrubs/PT_Generic_Shrub_01_dead.prefab";
+    const string CrossPath = "Assets/_RAB_Base/Prefabs/CH_assets/Devtricked/LPGHP/URP/Prefabs/SimpleCross.prefab";
     const string DeadBodyPath = "Assets/_RAB_Base/Prefabs/CH_assets/DeadBody LITE/Prefabs/Hanging_Body/Standing/Deadbody_Stand (3).prefab";
     const string StingerPath = "Assets/_RAB_Base/Audio/SFX/horror-game-stinger-boom (1).mp3";
+    const string ForestMusicPath = "Assets/_RAB_Base/Audio/Music/Lisboa - Horror music.mp3";
     const int MazeWidth = 55;
     const float CellSize = 5.2f;
+    const float PathWidth = 2.8f;
     const float WallHeight = 2.35f;
     const float WallThickness = 0.48f;
 
     static readonly Vector2Int[] Directions = { Vector2Int.up, Vector2Int.right, Vector2Int.down, Vector2Int.left };
     static readonly int[] Bits = { 1, 2, 4, 8 };
     static readonly int[] OppositeBits = { 4, 8, 1, 2 };
+    static readonly Vector2Int[] ForestCorners = { new Vector2Int(-1, -1), new Vector2Int(1, -1), new Vector2Int(-1, 1), new Vector2Int(1, 1) };
 
     [MenuItem("Tools/Roll of Fear/Build BOSQUE Level")]
     public static void Build()
     {
-        var scene = EditorSceneManager.OpenScene("Assets/_RAB_Base/Scenes/SCN_LVL01.unity", OpenSceneMode.Single);
+        var scene = EditorSceneManager.OpenScene("Assets/_RAB_Base/Scenes/SCN_LVL_CH.unity", OpenSceneMode.Single);
         var keep = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         { "AudioManager", "PlayerCam", "Main Camera", "RespawnPoint", "Directional Light", "Global Volume", "Canvas", "EventSystem", "Points", "Player" };
         foreach (var go in scene.GetRootGameObjects())
@@ -56,7 +60,7 @@ public static class BuildBosqueScene
         var cellOrigin = new Vector3(-half + CellSize * 0.5f, 0, -half + CellSize * 0.5f);
         var startCell = new Vector2Int(width / 2, 0);
         var exitCell = new Vector2Int(width / 2, height - 1);
-        Vector3 startPosition = cellOrigin;
+        Vector3 startPosition = cellOrigin + new Vector3(startCell.x * CellSize, 0, startCell.y * CellSize);
         player.transform.position = startPosition + Vector3.up * 0.55f;
         var respawn = GameObject.Find("RespawnPoint");
         if (respawn != null) respawn.transform.position = player.transform.position;
@@ -72,6 +76,7 @@ public static class BuildBosqueScene
             follow.fixedY = 0.55f;
             follow.followX = true;
             follow.Snap();
+            followTarget.transform.rotation = Quaternion.Euler(58f, 0f, 0f);
             var serializedCamera = new SerializedObject(cameraComponent);
             var cameraTarget = serializedCamera.FindProperty("Target");
             var trackingTarget = cameraTarget != null ? cameraTarget.FindPropertyRelative("TrackingTarget") : null;
@@ -90,7 +95,7 @@ public static class BuildBosqueScene
                 serializedComposer.ApplyModifiedPropertiesWithoutUndo();
                 EditorUtility.SetDirty(composer);
             }
-            cameraGo.transform.rotation = Quaternion.Euler(55f, 0, 0);
+            cameraGo.transform.rotation = Quaternion.Euler(58f, 0, 0);
         }
 
         var controller = player.GetComponent<PlayerController>();
@@ -110,42 +115,59 @@ public static class BuildBosqueScene
 
         RenderSettings.fog = true;
         RenderSettings.fogMode = FogMode.ExponentialSquared;
-        RenderSettings.fogColor = new Color(0.018f, 0.027f, 0.041f);
-        RenderSettings.fogDensity = 0.0065f;
+        RenderSettings.fogColor = new Color(0.028f, 0.04f, 0.052f);
+        RenderSettings.fogDensity = 0.0032f;
         RenderSettings.ambientMode = AmbientMode.Flat;
-        RenderSettings.ambientLight = new Color(0.115f, 0.145f, 0.18f);
+        RenderSettings.ambientLight = new Color(0.32f, 0.35f, 0.31f);
         RenderSettings.skybox = null;
         if (RenderSettings.sun != null)
         {
-            RenderSettings.sun.color = new Color(0.4f, 0.52f, 0.72f);
-            RenderSettings.sun.intensity = 0.2f;
+            RenderSettings.sun.color = new Color(0.48f, 0.58f, 0.74f);
+            RenderSettings.sun.intensity = 0.68f;
+        }
+        var directionalLight = GameObject.Find("Directional Light")?.GetComponent<Light>();
+        if (directionalLight != null)
+        {
+            directionalLight.color = new Color(0.60f, 0.68f, 0.82f);
+            directionalLight.intensity = 0.62f;
         }
 
         var world = new GameObject("BOSQUE | Laberinto de la arboleda negra");
-        var terrainMat = MakeMat("M_Bosque_Terreno", new Color(0.15f, 0.18f, 0.15f));
-        var dirtMat = MakeMat("M_Bosque_Tierra_Mojada", new Color(0.32f, 0.25f, 0.19f));
-        var wallMat = MakeMat("M_Bosque_Muro_Raices", new Color(0.105f, 0.085f, 0.071f));
-        var stoneMat = MakeMat("M_Bosque_Piedra", new Color(0.14f, 0.17f, 0.18f));
-        var leafMat = MakeMat("M_Bosque_Follaje", new Color(0.055f, 0.095f, 0.075f));
-        var leafMatAlt = MakeMat("M_Bosque_Follaje_2", new Color(0.085f, 0.115f, 0.08f));
-        var barkMat = MakeMat("M_Bosque_Tronco", new Color(0.13f, 0.085f, 0.052f));
+        var forestMusic = AssetDatabase.LoadAssetAtPath<AudioClip>(ForestMusicPath);
+        var musicManager = GameObject.Find("AudioManager");
+        var musicSource = musicManager != null ? musicManager.GetComponent<AudioSource>() : null;
+        if (forestMusic != null && musicSource != null)
+        {
+            musicSource.clip = forestMusic;
+            musicSource.loop = true;
+            musicSource.playOnAwake = true;
+            musicSource.volume = 0.48f;
+            musicSource.spatialBlend = 0f;
+            EditorUtility.SetDirty(musicSource);
+        }
+        var terrainMat = MakeMat("M_Bosque_Terreno", new Color(0.42f, 0.45f, 0.29f));
+        var dirtMat = MakeMat("M_Bosque_Tierra_Mojada", new Color(0.54f, 0.42f, 0.28f));
+        var stoneMat = MakeMat("M_Bosque_Piedra", new Color(0.20f, 0.22f, 0.21f));
+        var leafMat = MakeMat("M_Bosque_Follaje", new Color(0.11f, 0.15f, 0.09f));
+        var leafMatAlt = MakeMat("M_Bosque_Follaje_2", new Color(0.15f, 0.18f, 0.10f));
+        var barkMat = MakeMat("M_Bosque_Tronco", new Color(0.21f, 0.14f, 0.09f));
         var bloodMat = MakeMat("M_Bosque_Carmesí", new Color(0.38f, 0.018f, 0.022f), true);
         var eyeMat = MakeMat("M_Bosque_Ojos_Monstruo", new Color(0.9f, 0.025f, 0.015f), true);
         var grassTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(GrassTexturePath);
         if (grassTexture != null) terrainMat.SetTexture("_BaseMap", grassTexture);
         var dirtTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(DirtTexturePath);
         if (dirtTexture != null) dirtMat.SetTexture("_BaseMap", dirtTexture);
-        terrainMat.SetTextureScale("_BaseMap", new Vector2(30, 30));
+        terrainMat.SetTextureScale("_BaseMap", new Vector2(64, 64));
         dirtMat.SetTextureScale("_BaseMap", new Vector2(2, 2));
         EditorUtility.SetDirty(terrainMat);
         EditorUtility.SetDirty(dirtMat);
 
         int[] passages = GenerateMaze(width, height, startCell, 6202614);
-        var mazeRoot = new GameObject("Laberinto | muros y ruta");
+        var mazeRoot = new GameObject("Laberinto | senderos entre árboles");
         mazeRoot.transform.SetParent(world.transform, false);
         CreateGround(world.transform, terrainMat, width * CellSize + 64f, Vector3.zero);
-        CreateCorridorMesh(mazeRoot.transform, dirtMat, width, height, CellSize, cellOrigin);
-        CreateWallMesh(mazeRoot.transform, wallMat, passages, width, height, CellSize, cellOrigin, startCell, exitCell);
+        CreatePathMesh(mazeRoot.transform, dirtMat, passages, width, height, CellSize, cellOrigin, startCell, exitCell, PathWidth);
+        CreateNaturalBlockers(mazeRoot.transform, passages, width, height, CellSize, cellOrigin, startCell, exitCell);
         CreateStartGate(mazeRoot.transform, cellOrigin, startCell);
 
         var grid = mazeRoot.AddComponent<ForestMazeGrid>();
@@ -153,7 +175,7 @@ public static class BuildBosqueScene
         var rng = new System.Random(6202614);
 
         var treePrefabs = new List<GameObject>();
-        foreach (var path in new[] { PinePath, GnarledTreePath })
+        foreach (var path in new[] { PinePath, GnarledTreePath, TreePath })
         {
             var tree = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if (tree != null) treePrefabs.Add(tree);
@@ -338,47 +360,113 @@ public static class BuildBosqueScene
         collider.size = new Vector3(CellSize, WallHeight, WallThickness);
     }
 
-    static void CreateCorridorMesh(Transform parent, Material mat, int width, int height, float cellSize, Vector3 origin)
+    static void CreatePathMesh(Transform parent, Material mat, int[] passages, int width, int height, float cellSize, Vector3 origin, Vector2Int start, Vector2Int exit, float pathWidth)
     {
         EnsureMeshesFolder();
-        var vertices = new Vector3[width * height * 4];
-        var uv = new Vector2[vertices.Length];
-        var triangles = new int[width * height * 6];
-        int v = 0, t = 0;
+        var vertices = new List<Vector3>(width * height * 28);
+        var uv = new List<Vector2>(width * height * 28);
+        var triangles = new List<int>(width * height * 48);
+        const float surfaceY = -0.135f;
+        void AddOrganicStrip(Vector3 from, Vector3 to, int seed)
+        {
+            Vector3 along = (to - from).normalized;
+            Vector3 across = new Vector3(along.z, 0f, -along.x);
+            var edgeRandom = new System.Random(seed);
+            float phaseA = (float)edgeRandom.NextDouble() * Mathf.PI * 2f;
+            float phaseB = (float)edgeRandom.NextDouble() * Mathf.PI * 2f;
+            const int segments = 8;
+            int first = vertices.Count;
+            for (int i = 0; i <= segments; i++)
+            {
+                float t = i / (float)segments;
+                float envelope = Mathf.Sin(t * Mathf.PI);
+                float widthBlend = Mathf.SmoothStep(0f, 1f, Mathf.Min(t * 4f, (1f - t) * 4f));
+                float edgeWave = Mathf.Sin(t * Mathf.PI * 2f + phaseA) * 0.15f + Mathf.Sin(t * Mathf.PI * 3f + phaseB) * 0.065f;
+                float halfWidth = Mathf.Lerp(pathWidth * 0.32f, pathWidth * 0.5f, widthBlend) + edgeWave * envelope;
+                float centerWander = Mathf.Sin(t * Mathf.PI * 2f + phaseB) * 0.11f * envelope;
+                Vector3 center = Vector3.Lerp(from, to, t) + across * centerWander;
+                center.y = surfaceY;
+                vertices.Add(center - across * halfWidth);
+                vertices.Add(center + across * halfWidth);
+                uv.Add(new Vector2(0f, t * cellSize * 0.5f));
+                uv.Add(new Vector2(pathWidth, t * cellSize * 0.5f));
+            }
+            for (int i = 0; i < segments; i++)
+            {
+                int a = first + i * 2;
+                int b = a + 2;
+                triangles.Add(a); triangles.Add(b); triangles.Add(a + 1);
+                triangles.Add(a + 1); triangles.Add(b); triangles.Add(b + 1);
+            }
+        }
+        void AddRoundedNode(Vector3 center, int seed)
+        {
+            const int sides = 14;
+            var nodeRandom = new System.Random(seed);
+            int centerIndex = vertices.Count;
+            center.y = surfaceY - 0.0015f;
+            vertices.Add(center);
+            uv.Add(new Vector2(pathWidth * 0.5f, pathWidth * 0.5f));
+            int ringStart = vertices.Count;
+            for (int i = 0; i < sides; i++)
+            {
+                float angle = i * Mathf.PI * 2f / sides;
+                float radius = pathWidth * 0.60f * (0.94f + (float)nodeRandom.NextDouble() * 0.12f);
+                Vector3 point = center + new Vector3(Mathf.Cos(angle) * radius, 0f, Mathf.Sin(angle) * radius);
+                vertices.Add(point);
+                uv.Add(new Vector2(pathWidth * 0.5f + Mathf.Cos(angle) * radius, pathWidth * 0.5f + Mathf.Sin(angle) * radius));
+            }
+            for (int i = 0; i < sides; i++)
+            {
+                int current = ringStart + i;
+                int next = ringStart + (i + 1) % sides;
+                triangles.Add(centerIndex); triangles.Add(next); triangles.Add(current);
+            }
+        }
+
         for (int y = 0; y < height; y++)
         for (int x = 0; x < width; x++)
         {
+            int cell = y * width + x;
             float cx = origin.x + x * cellSize;
             float cz = origin.z + y * cellSize;
-            vertices[v] = new Vector3(cx - cellSize * 0.5f, -0.142f, cz - cellSize * 0.5f);
-            vertices[v + 1] = new Vector3(cx + cellSize * 0.5f, -0.142f, cz - cellSize * 0.5f);
-            vertices[v + 2] = new Vector3(cx + cellSize * 0.5f, -0.142f, cz + cellSize * 0.5f);
-            vertices[v + 3] = new Vector3(cx - cellSize * 0.5f, -0.142f, cz + cellSize * 0.5f);
-            uv[v] = new Vector2(0, 0); uv[v + 1] = new Vector2(2, 0); uv[v + 2] = new Vector2(2, 2); uv[v + 3] = new Vector2(0, 2);
-            triangles[t++] = v; triangles[t++] = v + 2; triangles[t++] = v + 1;
-            triangles[t++] = v; triangles[t++] = v + 3; triangles[t++] = v + 2;
-            v += 4;
+            // El ancho se modula a lo largo del trazado para romper la cuadrícula rígida.
+            if ((passages[cell] & 1) != 0 && y < height - 1)
+                AddOrganicStrip(new Vector3(cx, 0f, cz), new Vector3(cx, 0f, cz + cellSize), cell * 31 + 1);
+            if ((passages[cell] & 2) != 0 && x < width - 1)
+                AddOrganicStrip(new Vector3(cx, 0f, cz), new Vector3(cx + cellSize, 0f, cz), cell * 31 + 2);
+            if (cell == start.y * width + start.x)
+                AddOrganicStrip(new Vector3(cx, 0f, cz - cellSize * 0.5f), new Vector3(cx, 0f, cz), cell * 31 + 3);
+            if (cell == exit.y * width + exit.x)
+                AddOrganicStrip(new Vector3(cx, 0f, cz), new Vector3(cx, 0f, cz + cellSize * 0.5f), cell * 31 + 4);
+
+            bool verticalStraight = (passages[cell] & (1 | 4)) == (1 | 4) && (passages[cell] & (2 | 8)) == 0;
+            bool horizontalStraight = (passages[cell] & (2 | 8)) == (2 | 8) && (passages[cell] & (1 | 4)) == 0;
+            if (Degree(passages[cell]) > 0 && !verticalStraight && !horizontalStraight)
+                AddRoundedNode(new Vector3(cx, 0f, cz), cell * 31 + 9);
         }
-        var mesh = new Mesh { name = "Mesh_Bosque_Pasillos", indexFormat = IndexFormat.UInt32 };
-        mesh.vertices = vertices; mesh.uv = uv; mesh.triangles = triangles; mesh.RecalculateNormals();
-        var path = "Assets/_RAB_Base/Meshes/Mesh_Bosque_Pasillos.asset";
+
+        var mesh = new Mesh { name = "Mesh_Bosque_Senderos_De_Tierra", indexFormat = IndexFormat.UInt32 };
+        mesh.SetVertices(vertices); mesh.SetUVs(0, uv); mesh.SetTriangles(triangles, 0); mesh.RecalculateNormals(); mesh.RecalculateBounds();
+        var path = "Assets/_RAB_Base/Meshes/Mesh_Bosque_Senderos.asset";
         AssetDatabase.DeleteAsset(path); AssetDatabase.CreateAsset(mesh, path);
-        var floor = new GameObject("Camino | barro y hojas"); floor.transform.SetParent(parent, false);
+        var floor = new GameObject("Senderos estrechos | tierra húmeda entre la hierba"); floor.transform.SetParent(parent, false);
         floor.AddComponent<MeshFilter>().sharedMesh = mesh;
         floor.AddComponent<MeshRenderer>().sharedMaterial = mat;
+        floor.isStatic = true;
     }
 
-    static void CreateWallMesh(Transform parent, Material mat, int[] passages, int width, int height, float cellSize, Vector3 origin, Vector2Int start, Vector2Int exit)
+    static void CreateNaturalBlockers(Transform parent, int[] passages, int width, int height, float cellSize, Vector3 origin, Vector2Int start, Vector2Int exit)
     {
         EnsureMeshesFolder();
         var temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
         var cubeMesh = temp.GetComponent<MeshFilter>().sharedMesh;
         UnityEngine.Object.DestroyImmediate(temp);
-        var walls = new List<CombineInstance>(width * height * 2);
+        var blockers = new List<CombineInstance>(width * height * 2);
         float centerY = -0.15f + WallHeight * 0.5f;
-        void AddWall(Vector3 position, Vector3 scale)
+        void AddBlocker(Vector3 position, Vector3 scale)
         {
-            walls.Add(new CombineInstance { mesh = cubeMesh, transform = Matrix4x4.TRS(position, Quaternion.identity, scale) });
+            blockers.Add(new CombineInstance { mesh = cubeMesh, transform = Matrix4x4.TRS(position, Quaternion.identity, scale) });
         }
         for (int y = 0; y < height; y++)
         for (int x = 0; x < width; x++)
@@ -386,39 +474,36 @@ public static class BuildBosqueScene
             int cell = y * width + x;
             float cx = origin.x + x * cellSize;
             float cz = origin.z + y * cellSize;
-            if (x == 0 && (passages[cell] & 8) == 0) AddWall(new Vector3(cx - cellSize * 0.5f, centerY, cz), new Vector3(WallThickness, WallHeight, cellSize + WallThickness));
-            if (x < width - 1 && (passages[cell] & 2) == 0) AddWall(new Vector3(cx + cellSize * 0.5f, centerY, cz), new Vector3(WallThickness, WallHeight, cellSize + WallThickness));
-            if (y == 0 && (passages[cell] & 4) == 0 && !(start.x == x && start.y == y)) AddWall(new Vector3(cx, centerY, cz - cellSize * 0.5f), new Vector3(cellSize + WallThickness, WallHeight, WallThickness));
-            if (y < height - 1 && (passages[cell] & 1) == 0) AddWall(new Vector3(cx, centerY, cz + cellSize * 0.5f), new Vector3(cellSize + WallThickness, WallHeight, WallThickness));
-            if (x == width - 1 && (passages[cell] & 2) == 0) AddWall(new Vector3(cx + cellSize * 0.5f, centerY, cz), new Vector3(WallThickness, WallHeight, cellSize + WallThickness));
-            if (y == height - 1 && (passages[cell] & 1) == 0 && !(exit.x == x && exit.y == y)) AddWall(new Vector3(cx, centerY, cz + cellSize * 0.5f), new Vector3(cellSize + WallThickness, WallHeight, WallThickness));
+            if (x == 0) AddBlocker(new Vector3(cx - cellSize * 0.5f, centerY, cz), new Vector3(WallThickness, WallHeight, cellSize + WallThickness));
+            if (x < width - 1 && (passages[cell] & 2) == 0) AddBlocker(new Vector3(cx + cellSize * 0.5f, centerY, cz), new Vector3(WallThickness, WallHeight, cellSize + WallThickness));
+            if (y == 0 && !(start.x == x && start.y == y)) AddBlocker(new Vector3(cx, centerY, cz - cellSize * 0.5f), new Vector3(cellSize + WallThickness, WallHeight, WallThickness));
+            if (y < height - 1 && (passages[cell] & 1) == 0) AddBlocker(new Vector3(cx, centerY, cz + cellSize * 0.5f), new Vector3(cellSize + WallThickness, WallHeight, WallThickness));
+            if (x == width - 1) AddBlocker(new Vector3(cx + cellSize * 0.5f, centerY, cz), new Vector3(WallThickness, WallHeight, cellSize + WallThickness));
+            if (y == height - 1 && !(exit.x == x && exit.y == y)) AddBlocker(new Vector3(cx, centerY, cz + cellSize * 0.5f), new Vector3(cellSize + WallThickness, WallHeight, WallThickness));
         }
-        var mesh = new Mesh { name = "Mesh_Bosque_Muros", indexFormat = IndexFormat.UInt32 };
-        mesh.CombineMeshes(walls.ToArray(), true, true);
-        mesh.RecalculateNormals(); mesh.RecalculateBounds();
-        var path = "Assets/_RAB_Base/Meshes/Mesh_Bosque_Muros.asset";
+        var mesh = new Mesh { name = "Mesh_Bosque_Colision_Espesura", indexFormat = IndexFormat.UInt32 };
+        mesh.CombineMeshes(blockers.ToArray(), true, true); mesh.RecalculateBounds();
+        var path = "Assets/_RAB_Base/Meshes/Mesh_Bosque_Colision_Espesura.asset";
         AssetDatabase.DeleteAsset(path); AssetDatabase.CreateAsset(mesh, path);
-        var wallObject = new GameObject("Muros | barrera continua del laberinto"); wallObject.transform.SetParent(parent, false);
-        wallObject.AddComponent<MeshFilter>().sharedMesh = mesh;
-        wallObject.AddComponent<MeshRenderer>().sharedMaterial = mat;
-        wallObject.AddComponent<MeshCollider>().sharedMesh = mesh;
-        wallObject.isStatic = true;
+        var boundary = new GameObject("Límites invisibles | colisión de la espesura"); boundary.transform.SetParent(parent, false);
+        boundary.AddComponent<MeshCollider>().sharedMesh = mesh;
+        boundary.isStatic = true;
     }
 
     static void PlaceForestRim(Transform parent, List<GameObject> trees, GameObject grassPrefab, GameObject shrubPrefab, GameObject hillPrefab, float half, System.Random rng, Material bark, Material leaves, Material leaves2, Material terrain)
     {
         if (trees.Count > 0)
         {
-            float extent = half + 27f;
-            for (int ring = 0; ring < 2; ring++)
-            for (float at = -extent; at <= extent; at += 8.0f + (float)rng.NextDouble() * 3.2f)
+            float extent = half + 30f;
+            for (int ring = 0; ring < 3; ring++)
+            for (float at = -extent; at <= extent; at += 7.8f + (float)rng.NextDouble() * 1.4f)
             {
                 for (int side = -1; side <= 1; side += 2)
                 {
-                    float d = half + 5f + ring * 11f + (float)rng.NextDouble() * 3.0f;
+                    float d = half + 4f + ring * 8.8f + (float)rng.NextDouble() * 2.5f;
                     bool entryGap = (side < 0 && Mathf.Abs(at) < 13f) || (side > 0 && Mathf.Abs(at) < 13f);
-                    if (!entryGap) SpawnTree(trees[rng.Next(trees.Count)], parent, new Vector3(at, 0, side * d), rng, bark, leaves, leaves2, 0.9f, 1.65f);
-                    SpawnTree(trees[rng.Next(trees.Count)], parent, new Vector3(side * d, 0, at), rng, bark, leaves, leaves2, 0.9f, 1.65f);
+                    if (!entryGap) SpawnTree(trees[rng.Next(trees.Count)], parent, new Vector3(at, 0, side * d), rng, bark, leaves, leaves2, 0.9f, 1.55f);
+                    SpawnTree(trees[rng.Next(trees.Count)], parent, new Vector3(side * d, 0, at), rng, bark, leaves, leaves2, 0.9f, 1.55f);
                 }
             }
         }
@@ -452,8 +537,8 @@ public static class BuildBosqueScene
     {
         var pickupSet = new HashSet<Vector2Int>(pickupCells);
         var scareCells = new List<Vector2Int>();
-        int treeCount = 0;
-        int clutterCount = 0;
+        var scareSet = new HashSet<Vector2Int>();
+        var dressedCells = new HashSet<Vector2Int>();
         var startCell = new Vector2Int(width / 2, 0);
         var exitCell = new Vector2Int(width / 2, height - 1);
         for (int y = 2; y < height - 2; y++)
@@ -464,32 +549,61 @@ public static class BuildBosqueScene
             int fromExit = Mathf.Abs(x - exitCell.x) + Mathf.Abs(y - exitCell.y);
             if (fromStart < 6 || fromExit < 6) continue;
             int degree = Degree(passages[y * width + x]);
-            if (degree == 1 && !mainPath.Contains(cell))
+            if (degree == 1 && !mainPath.Contains(cell) && !pickupSet.Contains(cell) && scareCells.Count < 4 && (x * 7 + y * 11) % 9 == 0)
             {
-                if (!pickupSet.Contains(cell) && scareCells.Count < 4 && (x * 7 + y * 11) % 9 == 0) scareCells.Add(cell);
-                if (trees.Count > 0 && treeCount < 18 && fromStart > 8 && fromExit > 8 && (x * 3 + y * 5) % 31 == 0)
-                {
-                    float side = rng.Next(0, 2) == 0 ? -1.55f : 1.55f;
-                    SpawnTree(trees[rng.Next(trees.Count)], parent, grid.CellCenter(cell) + Vector3.right * side, rng, bark, leaves, leaves2, 0.42f, 0.67f);
-                    treeCount++;
-                }
-            }
-            else if (degree == 2 && clutterCount < 65 && (x * 13 + y * 3) % 37 == 0)
-            {
-                float side = rng.Next(0, 2) == 0 ? -1.72f : 1.72f;
-                SpawnProp(rng.Next(0, 2) == 0 ? grass : shrubs, parent, "Maleza del pasillo", grid.CellCenter(cell) + Vector3.right * side, rng, bark, 0.5f, 0.75f);
-                clutterCount++;
+                scareCells.Add(cell);
+                scareSet.Add(cell);
             }
         }
-        for (int i = 0; i < 44; i++)
+
+        int treeCount = 0;
+        int clutterCount = 0;
+        for (int y = 2; y < height - 2; y++)
+        for (int x = 2; x < width - 2; x++)
         {
-            int x = rng.Next(1, width - 1), y = rng.Next(1, height - 1);
             var cell = new Vector2Int(x, y);
-            if (pickupSet.Contains(cell) || Mathf.Abs(x - width / 2) + y < 6 || Mathf.Abs(x - width / 2) + (height - 1 - y) < 6) continue;
-            var prefab = i % 2 == 0 ? roots : stones;
-            float side = rng.Next(0, 2) == 0 ? -1.7f : 1.7f;
-            SpawnProp(prefab, parent, i % 2 == 0 ? "Raíces que muerden la tierra" : "Piedras con musgo", grid.CellCenter(cell) + Vector3.right * side, rng, stone, 0.45f, 0.7f);
+            int fromStart = Mathf.Abs(x - startCell.x) + y;
+            int fromExit = Mathf.Abs(x - exitCell.x) + (height - 1 - y);
+            if (fromStart < 2 || fromExit < 2) continue;
+            int cellIndex = y * width + x;
+            int passage = passages[cellIndex];
+            bool nearPickup = false;
+            foreach (var pickup in pickupCells)
+                if (Mathf.Abs(x - pickup.x) + Mathf.Abs(y - pickup.y) <= 1) { nearPickup = true; break; }
+            if (nearPickup) continue;
+            bool nearScare = false;
+            foreach (var scare in scareCells)
+                if (Mathf.Abs(x - scare.x) + Mathf.Abs(y - scare.y) <= 1) { nearScare = true; break; }
+            if (nearScare) continue;
+
+            bool nearCameraRoute = mainPath.Contains(cell)
+                || mainPath.Contains(cell + Vector2Int.up)
+                || mainPath.Contains(cell + Vector2Int.right)
+                || mainPath.Contains(cell + Vector2Int.down)
+                || mainPath.Contains(cell + Vector2Int.left);
+            var corner = ForestCornerOffset(passage, nearCameraRoute ? 2.34f : 2.02f, rng);
+            bool canPlaceTree = trees.Count > 0 && treeCount < 1200 && rng.NextDouble() < (nearCameraRoute ? 0.09 : 0.52);
+            if (canPlaceTree)
+            {
+                float minScale = nearCameraRoute ? 0.40f : 0.52f;
+                float maxScale = nearCameraRoute ? 0.60f : 0.88f;
+                SpawnTree(trees[rng.Next(trees.Count)], parent, grid.CellCenter(cell) + corner, rng, bark, leaves, leaves2, minScale, maxScale);
+                treeCount++;
+                dressedCells.Add(cell);
+            }
+            else if (clutterCount < 300 && rng.NextDouble() < 0.16)
+            {
+                int kind = rng.Next(4);
+                GameObject prefab = kind == 0 ? roots : kind == 1 ? stones : kind == 2 ? grass : shrubs;
+                if (prefab == null) continue;
+                Material material = kind == 0 ? bark : kind == 1 ? stone : kind == 2 ? leaves : bark;
+                string label = kind == 0 ? "Raíces retorcidas" : kind == 1 ? "Piedras con musgo" : kind == 2 ? "Hierba de pantano" : "Arbusto muerto";
+                SpawnProp(prefab, parent, label, grid.CellCenter(cell) + ForestCornerOffset(passage, 1.82f, rng), rng, material, 0.5f, 0.88f);
+                clutterCount++;
+                dressedCells.Add(cell);
+            }
         }
+
         var body = AssetDatabase.LoadAssetAtPath<GameObject>(DeadBodyPath);
         if (body != null)
         {
@@ -504,6 +618,63 @@ public static class BuildBosqueScene
                 RemoveColliders(instance);
             }
         }
+
+        var cross = AssetDatabase.LoadAssetAtPath<GameObject>(CrossPath);
+        if (cross != null)
+        {
+            var candidates = new List<Vector2Int>();
+            for (int y = 7; y < height - 7; y++)
+            for (int x = 7; x < width - 7; x++)
+            {
+                var cell = new Vector2Int(x, y);
+                int fromStart = Mathf.Abs(x - startCell.x) + y;
+                int fromExit = Mathf.Abs(x - exitCell.x) + (height - 1 - y);
+                if (Degree(passages[y * width + x]) == 1 && !mainPath.Contains(cell) && !pickupSet.Contains(cell) && !scareSet.Contains(cell) && !dressedCells.Contains(cell) && fromStart > 10 && fromExit > 10)
+                    candidates.Add(cell);
+            }
+            var placedCrosses = new List<Vector2Int>();
+            int crossCount = Mathf.Min(3, candidates.Count);
+            for (int i = 0; i < crossCount; i++)
+            {
+                int selected = -1;
+                for (int attempt = 0; attempt < 40 && selected < 0; attempt++)
+                {
+                    int candidateIndex = rng.Next(candidates.Count);
+                    var candidate = candidates[candidateIndex];
+                    bool spaced = true;
+                    foreach (var placed in placedCrosses)
+                        if (Mathf.Abs(candidate.x - placed.x) + Mathf.Abs(candidate.y - placed.y) < 9) { spaced = false; break; }
+                    if (spaced) selected = candidateIndex;
+                }
+                if (selected < 0) break;
+                var cell = candidates[selected];
+                candidates.RemoveAt(selected);
+                var instance = (GameObject)PrefabUtility.InstantiatePrefab(cross);
+                instance.name = "Cruz olvidada | referencia siniestra del bosque " + (i + 1).ToString("00");
+                instance.transform.SetParent(parent, false);
+                instance.transform.position = grid.CellCenter(cell) + ForestCornerOffset(passages[cell.y * width + cell.x], 1.95f, rng);
+                instance.transform.rotation = Quaternion.Euler(0, rng.Next(0, 360), 0);
+                instance.transform.localScale = Vector3.one * 0.72f;
+                RemoveColliders(instance);
+                placedCrosses.Add(cell);
+            }
+        }
+    }
+
+    static Vector3 ForestCornerOffset(int passage, float distance, System.Random rng)
+    {
+        int bestScore = int.MaxValue;
+        var best = new List<Vector2Int>(4);
+        foreach (var corner in ForestCorners)
+        {
+            int xBit = corner.x < 0 ? 8 : 2;
+            int zBit = corner.y < 0 ? 4 : 1;
+            int score = ((passage & xBit) != 0 ? 1 : 0) + ((passage & zBit) != 0 ? 1 : 0);
+            if (score < bestScore) { bestScore = score; best.Clear(); }
+            if (score == bestScore) best.Add(corner);
+        }
+        var chosen = best[rng.Next(best.Count)];
+        return new Vector3(chosen.x * distance, 0, chosen.y * distance);
     }
 
     static void PlacePickups(ForestMazeGrid grid, List<Vector2Int> cells, Vector2Int exitCell)
@@ -647,7 +818,7 @@ public static class BuildBosqueScene
     {
         if (prefab == null) return;
         var tree = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
-        tree.name = "Árbol muerto | límite del laberinto"; tree.transform.SetParent(parent); tree.transform.position = position;
+        tree.name = "Árbol retorcido | espesura del bosque"; tree.transform.SetParent(parent); tree.transform.position = position;
         tree.transform.rotation = Quaternion.Euler(0, (float)rng.NextDouble() * 360, 0);
         float scale = minScale + (float)rng.NextDouble() * (maxScale - minScale); tree.transform.localScale = Vector3.one * scale;
         foreach (var renderer in tree.GetComponentsInChildren<Renderer>(true))
@@ -683,7 +854,10 @@ public static class BuildBosqueScene
         string path = "Assets/_RAB_Base/Materials/" + name + ".mat";
         var mat = AssetDatabase.LoadAssetAtPath<Material>(path);
         if (mat == null) { mat = new Material(shader) { name = name }; AssetDatabase.CreateAsset(mat, path); }
-        mat.shader = shader; mat.color = color;
+        mat.shader = shader;
+        mat.color = color;
+        if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", color);
+        if (mat.HasProperty("_Color")) mat.SetColor("_Color", color);
         if (emission) { mat.EnableKeyword("_EMISSION"); mat.SetColor("_EmissionColor", color * 1.6f); }
         EditorUtility.SetDirty(mat); return mat;
     }
