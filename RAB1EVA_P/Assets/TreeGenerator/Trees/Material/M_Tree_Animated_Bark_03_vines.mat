@@ -1,0 +1,105 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: M_Tree_Animated_Bark_03_vines
+  m_Shader: {fileID: 4800000, guid: 5045bcd2b4e89c2498d680caa48989cb, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _GROW_ON
+  - _WIND_ON
+  m_InvalidKeywords:
+  - _TWOSIDED
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 0e400759be113ed40acabe2e773db46d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: d89173fd84d9e6747a2b8609f618ea12, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightBumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HeightMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _PivotMap:
+        m_Texture: {fileID: 2800000, guid: 9fb75be60f0761e4db4a0fa56de94735, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopBumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TopMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaCutoffEnable: 0
+    - _BaseMult: 1
+    - _Billboard: 0
+    - _Cutoff: 0.5
+    - _GrowMaskCutoff: 0.02
+    - _GrowPhase: 1
+    - _GrowRadiusWindow: 0.1
+    - _GrowTipLead: 0
+    - _HeightBaseMult: 1
+    - _HeightFade: 1
+    - _HeightHeight: 0
+    - _HeightRepeatU: 1
+    - _HeightRepeatV: 1
+    - _Metallic: 0
+    - _PhaseOffset: 0
+    - _PivotCount: 1
+    - _Power_L1: 0.2
+    - _Power_L2: 0.1
+    - _Power_Trunk: 0.5
+    - _Smoothness: 0
+    - _Speed_L1: 1.5
+    - _Speed_L2: 3
+    - _Speed_Trunk: 1
+    - _TopBaseMult: 1
+    - _TopBlendMax: 0.5
+    - _TopNoiseScale: 2
+    - _TopOpacity: 1
+    - _TopRepeatU: 1
+    - _TopRepeatV: 1
+    - _Twist: 1
+    - _UTiling: 1
+    - _UseGrow: 1
+    - _UseHeightBlend: 0
+    - _UseTopLayer: 0
+    - _UseWind: 1
+    - _VTiling: 8
+    - _WindBaseLockEnd: 2.5
+    - _WindBaseLockStart: 0.25
+    - _WindL2AttachDebug: 0
+    m_Colors:
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _HeightColor: {r: 0.5, g: 0.39999998, b: 0.29999998, a: 1}
+    - _PivotMin: {r: -9.234149, g: -0.11527179, b: -7.9196277, a: 0}
+    - _PivotRange: {r: 18.27097, g: 14.838683, b: 17.1995, a: 0}
+    - _TopColor: {r: 1, g: 1, b: 1, a: 1}
+    - _WindDir: {r: 1, g: 0, b: 0, a: 0}
+  m_BuildTextureStacks: []
