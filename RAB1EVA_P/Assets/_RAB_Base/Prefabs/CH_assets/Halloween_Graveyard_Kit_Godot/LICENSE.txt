@@ -1,0 +1,18 @@
+Low Poly Graveyard Kit — Halloween & Horror 3D Assets
+Copyright (c) 2026 Omie's Assets (Omar Nori)
+
+YOU MAY
+- Use these assets in personal and commercial projects (games, apps, films, renders, prototypes).
+- Modify the assets for use in your projects.
+- Ship the assets as part of a compiled/packaged game or application.
+
+YOU MAY NOT
+- Resell, redistribute, share or sub-license the assets, modified or unmodified, on their own or as part of
+  another asset pack, template or marketplace product.
+- Claim the assets as your own original work.
+
+Credit ("Assets by Omie's Assets") is appreciated but not required.
+
+The bundled Terrain3D plugin (addons/terrain_3d) is a separate work under the MIT licence; see its own LICENSE.txt.
+
+THE ASSETS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.

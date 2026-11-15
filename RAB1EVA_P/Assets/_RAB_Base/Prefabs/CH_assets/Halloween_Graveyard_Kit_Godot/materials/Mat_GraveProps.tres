@@ -1,0 +1,21 @@
+[gd_resource type="ORMMaterial3D" format=3 uid="uid://bvbd4l52fi8y1"]
+
+[ext_resource type="Texture2D" uid="uid://12xtwvmwr7bl" path="res://textures/2K/2K_Mat_GraveProps_BaseColor.tga" id="1_basecolor"]
+[ext_resource type="Texture2D" uid="uid://c001kht6hpi1v" path="res://textures/2K/2K_Mat_GraveProps_OcclusionRoughnessMetallic.tga" id="2_occlusionroughnessmetallic"]
+[ext_resource type="Texture2D" uid="uid://cyrxj18pis84n" path="res://textures/2K/2K_Mat_GraveProps_Normal.tga" id="3_normal"]
+[ext_resource type="Texture2D" uid="uid://bjda3qmt6go5s" path="res://textures/2K/2K_Mat_GraveProps_Emissive.tga" id="4_emissive"]
+
+[resource]
+resource_name = "Mat_GraveProps"
+transparency = 3
+alpha_hash_scale = 1.0
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("1_basecolor")
+orm_texture = ExtResource("2_occlusionroughnessmetallic")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 3.0
+emission_operator = 1
+emission_texture = ExtResource("4_emissive")
+normal_enabled = true
+normal_texture = ExtResource("3_normal")

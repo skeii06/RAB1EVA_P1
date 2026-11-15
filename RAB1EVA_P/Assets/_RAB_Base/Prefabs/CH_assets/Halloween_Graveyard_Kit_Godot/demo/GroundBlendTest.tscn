@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="PackedScene" path="res://demo/Demo_GroundPlane.glb" id="1_ground"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Tombstone.glb" id="2_t"]
+[ext_resource type="PackedScene" path="res://models/2K/SM_Tombstone_04.glb" id="3_t4"]
+[ext_resource type="PackedScene" path="res://models/1K/SM_JackOLantern.glb" id="4_jack"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.03, 0.035, 0.08, 1)
+sky_horizon_color = Color(0.12, 0.1, 0.18, 1)
+ground_bottom_color = Color(0.02, 0.02, 0.03, 1)
+ground_horizon_color = Color(0.12, 0.1, 0.18, 1)
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+ambient_light_source = 3
+ambient_light_color = Color(0.45, 0.45, 0.6, 1)
+ambient_light_energy = 0.7
+tonemap_mode = 3
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.25, 0.25, 0.38, 1)
+fog_density = 0.01
+
+[node name="GroundBlendTest" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+
+[node name="Moonlight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.7, -0.5, 0.5, 0, 0.707, 0.707, -0.707, -0.5, 0.5, 0, 10, 0)
+light_color = Color(0.75, 0.8, 1, 1)
+light_energy = 1.3
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.8, 0.6, 0, -0.6, 0.8, 0, 6, 10)
+current = true
+
+[node name="Demo_GroundPlane" parent="." instance=ExtResource("1_ground")]
+
+[node name="SM_Tombstone" parent="." instance=ExtResource("2_t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 1)
+
+[node name="SM_Tombstone_04" parent="." instance=ExtResource("3_t4")]
+transform = Transform3D(0.94, 0, 0.34, 0, 1, 0, -0.34, 0, 0.94, 3.5, 0, 0)
+
+[node name="SM_JackOLantern" parent="." instance=ExtResource("4_jack")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, 0, 4)
+
+[node name="JackLight" type="OmniLight3D" parent="SM_JackOLantern"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+light_color = Color(1, 0.55, 0.15, 1)
+light_energy = 1.5
+omni_range = 3.0
